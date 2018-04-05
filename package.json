@@ -2,9 +2,9 @@
   "name": "generator-ava",
   "version": "0.0.2",
   "description": "Add AVA test support to your project",
-  "main": "index.js",
+  "main": "generators/app/index.js",
   "scripts": {
-    "test": "test && ava"
+    "test": "nyc ava"
   },
   "repository": {
     "type": "git",
@@ -26,6 +26,7 @@
     "husky": "^0.14.3",
     "lint-staged": "^7.0.0",
     "nsp": "^3.2.1",
+    "nyc": "^11.6.0",
     "prettier": "^1.11.1",
     "yeoman-assert": "^3.1.0",
     "yeoman-test": "^1.7.0"
