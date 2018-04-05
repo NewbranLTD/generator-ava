@@ -1,0 +1,25 @@
+{
+  "name": "generator-ava",
+  "version": "0.0.1",
+  "description": "Add AVA test support to your project",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/NewbranLTD/generator-ava.git"
+  },
+  "keywords": [
+    "Test",
+    "TDD",
+    "AVA",
+    "Node"
+  ],
+  "author": "Joel Chu",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/NewbranLTD/generator-ava/issues"
+  },
+  "homepage": "https://github.com/NewbranLTD/generator-ava#readme"
+}
