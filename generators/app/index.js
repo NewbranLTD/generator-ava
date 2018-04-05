@@ -14,9 +14,9 @@ module.exports = class extends Generator {
       desc: 'Test environment (jsdom or node)'
     });
 
-    this.option('coveralls', {
+    this.option('nyc', {
       type: Boolean,
-      desc: 'Send coverage reports to coveralls'
+      desc: 'Add coverage reports using nyc'
     });
   }
 
@@ -32,9 +32,9 @@ module.exports = class extends Generator {
       },
       {
         type: 'confirm',
-        name: 'coveralls',
-        message: 'Send coverage reports to coveralls?',
-        when: this.options.coveralls === undefined
+        name: 'nyc',
+        message: 'Add coverage reports using nyc?',
+        when: this.options.nyc === undefined
       }
     ];
 
@@ -42,7 +42,7 @@ module.exports = class extends Generator {
       this.props = Object.assign(
         {
           testEnv: this.options.testEnv,
-          coveralls: this.options.coveralls
+          nyc: this.options.nyc
         },
         props
       );
@@ -50,18 +50,26 @@ module.exports = class extends Generator {
   }
 
   writing() {
-    var pkg = this.fs.readJSON(this.destinationPath('package.json'), {});
+    let pkg = this.fs.readJSON(this.destinationPath('package.json'), {});
     pkg = extend(pkg, {
       scripts: {},
       devDependencies: {
         ava: rootPkg.devDependencies.ava
-      },
-      ava: {
-        collectCoverage: true,
-        coverageDirectory: 'coverage'
       }
     });
-
+    /*
+    ava: {
+      collectCoverage: true,
+      coverageDirectory: 'coverage'
+    }
+    */
+    if (this.options.nyc) {
+      pkg = extend(pkg, {
+        devDependencies: {
+          nyc: rootPkg.devDependencies.nyc
+        }
+      });
+    }
     // Add jest to the npm test script in a non-destructive way
     var testScripts = pkg.scripts.test || '';
     testScripts = testScripts
@@ -73,9 +81,9 @@ module.exports = class extends Generator {
       pkg.scripts.test = testScripts.join(' && ');
     }
 
-    // Send coverage reports to coveralls
-    if (this.props.coveralls) {
-      pkg.scripts.posttest = 'cat ./coverage/lcov.info | coveralls';
+    // Send coverage reports to nyc
+    if (this.props.nyc) {
+      pkg.scripts.posttest = 'cat ./coverage/lcov.info | nyc';
       pkg.devDependencies.nyc = rootPkg.devDependencies.nyc;
     }
 
